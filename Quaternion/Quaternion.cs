@@ -33,6 +33,14 @@ namespace Quaternion {
             return new Quaternion(x, y, z, w);
         }
 
+        public static Quaternion operator !(Quaternion a) {
+            return new Quaternion(-a.x, -a.y, -a.z, -a.w);
+        }
+
+        public static Quaternion operator-(Quaternion a, Quaternion b) {
+            return a + !b;
+        }
+
         public static bool operator==(Quaternion a, Quaternion b) {
             return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;
         }
