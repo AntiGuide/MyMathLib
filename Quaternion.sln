@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quaternion", "Quaternion\Quaternion.csproj", "{E403E673-0CDC-49F3-AA5B-EAE391E3ABC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E403E673-0CDC-49F3-AA5B-EAE391E3ABC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E403E673-0CDC-49F3-AA5B-EAE391E3ABC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E403E673-0CDC-49F3-AA5B-EAE391E3ABC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E403E673-0CDC-49F3-AA5B-EAE391E3ABC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {20840D85-AC44-40E3-A825-37362F1E6907}
+	EndGlobalSection
+EndGlobal
