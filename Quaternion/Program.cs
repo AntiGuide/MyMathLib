@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Quaternion {
+namespace MyMathLib {
     class Program {
         static void Main(string[] args) {
             var a = new Quaternion(1, 2, 3, 4);
@@ -35,6 +35,11 @@ namespace Quaternion {
 
             Console.Write("Inverse:");
             Console.WriteLine("\t" + a.Inverse() + "\t= \t" + Quaternion.Conjugate(a) / Math.Pow(a.Abs(), 2));
+
+            Console.WriteLine();
+            Console.WriteLine("Matrix Tests");
+            Console.WriteLine("------------");
+            Console.WriteLine();
 
             Console.ReadLine();
         }

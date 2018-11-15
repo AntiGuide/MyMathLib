@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Quaternion {
+namespace MyMathLib {
     public class Quaternion {
         public double x, y, z, w;
 
