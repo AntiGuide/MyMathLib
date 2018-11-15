@@ -58,8 +58,8 @@ namespace MyMathLib {
             Console.WriteLine((e * f).ToString());
 
             var g = new Vector3();
-            var h = new Vector3(new double[] { 0, 1, 2 });
-            var i = new Vector3(0, 1, 2);
+            var h = new Vector3(new double[] { 1, -5, 2 });
+            var i = new Vector3(2, 0, 3);
 
             Console.WriteLine();
             Console.WriteLine("Vector Tests");
@@ -75,8 +75,11 @@ namespace MyMathLib {
             Console.WriteLine("g - h:");
             Console.WriteLine((g - h).ToString());
 
-            //Console.WriteLine("h * i:");
-            //Console.WriteLine((h * i).ToString());
+            Console.WriteLine("h * i:");
+            Console.WriteLine(Vector3.Dot(h, i));
+            
+            Console.WriteLine("h x i:");
+            Console.WriteLine(Vector3.Cross(h, i).ToString());
 
             Console.ReadLine();
         }

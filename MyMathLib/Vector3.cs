@@ -23,10 +23,25 @@ namespace MyMathLib {
         public Vector3(double x, double y, double z) {
             this.vector = new double[3] { x, y, z };
         }
-        
+
         public double this[int i] {
             get { return vector[i]; }
             set { vector[i] = value; }
+        }
+
+        public double x {
+            get { return vector[0]; }
+            set { vector[0] = value; }
+        }
+
+        public double y {
+            get { return vector[1]; }
+            set { vector[1] = value; }
+        }
+
+        public double z {
+            get { return vector[2]; }
+            set { vector[2] = value; }
         }
 
         public static Vector3 operator +(Vector3 a, Vector3 b) {
@@ -56,6 +71,16 @@ namespace MyMathLib {
             for (int i = 0; i < 3; i++) {
                 ret += a[i] * b[i];
             }
+
+            return ret;
+        }
+
+        public static Vector3 Cross(Vector3 a, Vector3 b) {
+            var ret = new Vector3();
+
+            ret[0] = a.y * b.z - a.z * b.y;
+            ret[1] = a.z * b.x - a.x * b.z;
+            ret[2] = a.x * b.y - a.y * b.x;
 
             return ret;
         }
