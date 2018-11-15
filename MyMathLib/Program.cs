@@ -88,7 +88,16 @@ namespace MyMathLib {
 
             Console.WriteLine(RollNickGier.GetRotationMatrix(90, 90, 90).ToString());
             Console.WriteLine();
-            Console.WriteLine(AxisAngle.GetRotationMatrix(90, new Vector3(0,1,0)).ToString());
+            Console.WriteLine(AxisAngle.GetRotationMatrix(90, new Vector3(0, 1, 0)).ToString());
+            Console.WriteLine();
+            Console.WriteLine((AxisAngle.GetRotationMatrix(90, new Vector3(0, 1, 0)) * new Vector3(5,0,0)).ToString());
+
+            var q = new Quaternion(90, new Vector3(0, 1, 0));
+            var v = new Quaternion(0, 5, 0, 0);
+            var q2 = Quaternion.Conjugate(q);
+            var res = q * v * q2;
+
+            Console.WriteLine(new Vector3(res.y, res.z, res.w).ToString());
 
             Console.ReadLine();
         }

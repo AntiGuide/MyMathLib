@@ -110,6 +110,21 @@ namespace MyMathLib {
             return ret;
         }
 
+        public static Vector3 operator *(Matrix4X4 a, Vector3 b) {
+            var bArr = new double[4] { b.x, b.y, b.z, 1};
+            var ret = new double[3];
+            for (int i = 0; i < 3; i++) {
+                var erg = 0d;
+                for (int i2 = 0; i2 < 4; i2++) {
+                    erg += a[i, i2] * bArr[i2];
+                }
+
+                ret[i] = erg;
+            }
+
+            return new Vector3(ret[0], ret[1], ret[2]);
+        }
+
         override public string ToString() {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("|\t" + Math.Round(matrix[0, 0], 2) + "\t" + Math.Round(matrix[0, 1], 2) + "\t" + Math.Round(matrix[0, 2], 2) + "\t" + Math.Round(matrix[0, 3], 2) + "\t|");

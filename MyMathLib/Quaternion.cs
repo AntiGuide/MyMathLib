@@ -11,6 +11,15 @@ namespace MyMathLib {
             this.w = w;
         }
 
+        public Quaternion(double a, Vector3 v) {
+            a *= Math.PI / 180;
+            v *= Math.Sin(a / 2);
+            this.x = Math.Cos(a/2);
+            this.y = v.x;
+            this.z = v.y;
+            this.w = v.z;
+        }
+
         public static Quaternion operator +(Quaternion a, Quaternion b) {
             var x = a.x + b.x;
             var y = a.y + b.y;

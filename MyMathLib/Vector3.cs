@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MyMathLib {
-    class Vector3 {
+    public class Vector3 {
         double[] vector;
 
         public Vector3() {
@@ -53,6 +53,19 @@ namespace MyMathLib {
             return ret;
         }
 
+        public static Vector3 operator *(double a, Vector3 b) {
+            var ret = new Vector3();
+            for (int i = 0; i < 3; i++) {
+                ret[i] = a * b[i];
+            }
+
+            return ret;
+        }
+
+        public static Vector3 operator *(Vector3 a, double b) {
+            return b * a;
+        }
+
         public static Vector3 operator -(Vector3 a, Vector3 b) {
             return a + !b;
         }
@@ -87,9 +100,9 @@ namespace MyMathLib {
 
         override public string ToString() {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("|\t" + vector[0] + "\t|");
-            stringBuilder.AppendLine("|\t" + vector[1] + "\t|");
-            stringBuilder.AppendLine("|\t" + vector[2] + "\t|");
+            stringBuilder.AppendLine("|\t" + Math.Round(vector[0],2) + "\t|");
+            stringBuilder.AppendLine("|\t" + Math.Round(vector[1],2) + "\t|");
+            stringBuilder.AppendLine("|\t" + Math.Round(vector[2],2) + "\t|");
             return stringBuilder.ToString();
         }
     }
