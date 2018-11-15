@@ -16,6 +16,33 @@ namespace MyMathLib {
             this.matrix = matrix;
         }
 
+        public Matrix4X4(Quaternion q) {
+            var matrix = new double[4, 4];
+            q = q.Normalize();
+
+            matrix[0, 0] = 1 - 2 * Math.Pow(q.z, 2) - 2 * Math.Pow(q.w, 2);
+            matrix[0, 1] = 2 * q.y * q.z - 2 * q.w * q.x;
+            matrix[0, 2] = 2 * q.y * q.w + 2 * q.z * q.x;
+            matrix[0, 3] = 0;
+
+            matrix[1, 0] = 2 * q.y * q.z + 2 * q.w * q.x;
+            matrix[1, 1] = 1 - 2 * Math.Pow(q.y, 2) - 2 * Math.Pow(q.w, 2);
+            matrix[1, 2] = 2 * q.z * q.w - 2 * q.y * q.x;
+            matrix[1, 3] = 0;
+
+            matrix[2, 0] = 2 * q.y * q.w - 2 * q.z * q.x;
+            matrix[2, 1] = 2 * q.z * q.w + 2 * q.y * q.x;
+            matrix[2, 2] = 1 - 2 * Math.Pow(q.y, 2) - 2 * q.z;
+            matrix[2, 3] = 0;
+
+            matrix[3, 0] = 0;
+            matrix[3, 1] = 0;
+            matrix[3, 2] = 0;
+            matrix[3, 3] = 1;
+
+            this.matrix = matrix;
+        }
+
         public Matrix4X4(double[] matrix) {
             var matrix2 = new double[4, 4];
             for (int i = 0; i < 4; i++) {
@@ -111,7 +138,7 @@ namespace MyMathLib {
         }
 
         public static Vector3 operator *(Matrix4X4 a, Vector3 b) {
-            var bArr = new double[4] { b.x, b.y, b.z, 1};
+            var bArr = new double[4] { b.x, b.y, b.z, 1 };
             var ret = new double[3];
             for (int i = 0; i < 3; i++) {
                 var erg = 0d;

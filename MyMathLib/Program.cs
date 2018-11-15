@@ -99,6 +99,8 @@ namespace MyMathLib {
 
             Console.WriteLine(new Vector3(res.y, res.z, res.w).ToString());
 
+            Console.WriteLine((new Matrix4X4(q) * new Vector3(5, 0, 0)).ToString());
+
             Console.ReadLine();
         }
     }
