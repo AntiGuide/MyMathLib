@@ -9,6 +9,10 @@ namespace MyMathLib {
         private double[,] matrix;
 
         public Matrix4X4(double[,] matrix) {
+            if (matrix.GetLength(0) != 4 || matrix.GetLength(1) != 4) {
+                throw new ArgumentOutOfRangeException(nameof(matrix), "Array height and width has to be 4");
+            }
+
             this.matrix = matrix;
         }
 

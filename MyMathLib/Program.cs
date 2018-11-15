@@ -57,6 +57,27 @@ namespace MyMathLib {
             Console.WriteLine("e * f:");
             Console.WriteLine((e * f).ToString());
 
+            var g = new Vector3();
+            var h = new Vector3(new double[] { 0, 1, 2 });
+            var i = new Vector3(0, 1, 2);
+
+            Console.WriteLine();
+            Console.WriteLine("Vector Tests");
+            Console.WriteLine("------------");
+            Console.WriteLine();
+
+            Console.WriteLine("Initialization:");
+            Console.WriteLine(g.ToString());
+
+            Console.WriteLine("g + h:");
+            Console.WriteLine((g + h).ToString());
+
+            Console.WriteLine("g - h:");
+            Console.WriteLine((g - h).ToString());
+
+            //Console.WriteLine("h * i:");
+            //Console.WriteLine((h * i).ToString());
+
             Console.ReadLine();
         }
     }
