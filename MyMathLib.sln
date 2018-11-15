@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMathLib", "Quaternion\MyMathLib.csproj", "{E403E673-0CDC-49F3-AA5B-EAE391E3ABC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMathLib", "MyMathLib\MyMathLib.csproj", "{E403E673-0CDC-49F3-AA5B-EAE391E3ABC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
