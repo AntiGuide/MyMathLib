@@ -1,6 +1,6 @@
 # MyMathLib
 
-MyMathLib is an example math library with implementations of quaternions, vectors and matrices and more in C#
+MyMathLib is an example math library with implementations of quaternions, vectors, matrices and more in C#
 
 ## Author(s)
 
