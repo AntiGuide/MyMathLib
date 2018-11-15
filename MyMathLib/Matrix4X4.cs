@@ -17,7 +17,7 @@ namespace MyMathLib {
         }
 
         public Matrix4X4(double[] matrix) {
-            var matrix2 = new double[4,4];
+            var matrix2 = new double[4, 4];
             for (int i = 0; i < 4; i++) {
                 for (int i2 = 0; i2 < 4; i2++) {
                     matrix2[i, i2] = matrix[i * 4 + i2];
@@ -26,7 +26,7 @@ namespace MyMathLib {
 
             this.matrix = matrix2;
         }
-        
+
         public Matrix4X4(IEnumerable<double> matrix) {
             var matrix2 = new double[4, 4];
             for (int i = 0; i < 4; i++) {
@@ -103,8 +103,8 @@ namespace MyMathLib {
 
                     ret[i, i2] = erg;
                 }
-                
-                
+
+
             }
 
             return ret;
@@ -112,10 +112,10 @@ namespace MyMathLib {
 
         override public string ToString() {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("|\t" + matrix[0, 0] + "\t" + matrix[0, 1] + "\t" + matrix[0, 2] + "\t" + matrix[0, 3] + "\t|");
-            stringBuilder.AppendLine("|\t" + matrix[1, 0] + "\t" + matrix[1, 1] + "\t" + matrix[1, 2] + "\t" + matrix[1, 3] + "\t|");
-            stringBuilder.AppendLine("|\t" + matrix[2, 0] + "\t" + matrix[2, 1] + "\t" + matrix[2, 2] + "\t" + matrix[2, 3] + "\t|");
-            stringBuilder.AppendLine("|\t" + matrix[3, 0] + "\t" + matrix[3, 1] + "\t" + matrix[3, 2] + "\t" + matrix[3, 3] + "\t|");
+            stringBuilder.AppendLine("|\t" + Math.Round(matrix[0, 0], 2) + "\t" + Math.Round(matrix[0, 1], 2) + "\t" + Math.Round(matrix[0, 2], 2) + "\t" + Math.Round(matrix[0, 3], 2) + "\t|");
+            stringBuilder.AppendLine("|\t" + Math.Round(matrix[1, 0], 2) + "\t" + Math.Round(matrix[1, 1], 2) + "\t" + Math.Round(matrix[1, 2], 2) + "\t" + Math.Round(matrix[1, 3], 2) + "\t|");
+            stringBuilder.AppendLine("|\t" + Math.Round(matrix[2, 0], 2) + "\t" + Math.Round(matrix[2, 1], 2) + "\t" + Math.Round(matrix[2, 2], 2) + "\t" + Math.Round(matrix[2, 3], 2) + "\t|");
+            stringBuilder.AppendLine("|\t" + Math.Round(matrix[3, 0], 2) + "\t" + Math.Round(matrix[3, 1], 2) + "\t" + Math.Round(matrix[3, 2], 2) + "\t" + Math.Round(matrix[3, 3], 2) + "\t|");
             return stringBuilder.ToString();
         }
     }

@@ -81,6 +81,15 @@ namespace MyMathLib {
             Console.WriteLine("h x i:");
             Console.WriteLine(Vector3.Cross(h, i).ToString());
 
+            Console.WriteLine();
+            Console.WriteLine("Rotation Matrix Tests");
+            Console.WriteLine("------------");
+            Console.WriteLine();
+
+            Console.WriteLine(RollNickGier.GetRotationMatrix(90, 90, 90).ToString());
+            Console.WriteLine();
+            Console.WriteLine(AxisAngle.GetRotationMatrix(90, new Vector3(0,1,0)).ToString());
+
             Console.ReadLine();
         }
     }
