@@ -1,69 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MyMathLib {
     public class Vector3 {
-        double[] vector;
+        private readonly float[] vector;
 
         public Vector3() {
-            this.vector = new double[3];
+            this.vector = new float[3];
         }
 
-        public Vector3(double[] vector) {
-            if (vector.Length != 3) {
-                throw new ArgumentOutOfRangeException(nameof(vector), "Array Length has to be 3");
-            }
-
-            this.vector = vector;
+        public Vector3(float x, float y, float z) {
+            this.vector = new[] { x, y, z };
         }
 
-        public Vector3(double x, double y, double z) {
-            this.vector = new double[3] { x, y, z };
+        public float this[int i] {
+            get => vector[i];
+            set => vector[i] = value;
         }
 
-        public double this[int i] {
-            get { return vector[i]; }
-            set { vector[i] = value; }
+        public float x {
+            get => vector[0];
+            set => vector[0] = value;
         }
 
-        public double x {
-            get { return vector[0]; }
-            set { vector[0] = value; }
+        public float y {
+            get => vector[1];
+            set => vector[1] = value;
         }
 
-        public double y {
-            get { return vector[1]; }
-            set { vector[1] = value; }
+        public float z {
+            get => vector[2];
+            set => vector[2] = value;
         }
 
-        public double z {
-            get { return vector[2]; }
-            set { vector[2] = value; }
-        }
+        public float Length => (float)Math.Sqrt(Math.Pow(x,2) + Math.Pow(y,2) + Math.Pow(z,2));
+        
+        public Vector3 Normalized => this / this.Length;
 
         public static Vector3 operator +(Vector3 a, Vector3 b) {
             var ret = new Vector3();
-            for (int i = 0; i < 3; i++) {
+            for (var i = 0; i < 3; i++) {
                 ret[i] = a[i] + b[i];
             }
 
             return ret;
         }
 
-        public static Vector3 operator *(double a, Vector3 b) {
+        public static Vector3 operator *(float a, Vector3 b) {
             var ret = new Vector3();
-            for (int i = 0; i < 3; i++) {
+            for (var i = 0; i < 3; i++) {
                 ret[i] = a * b[i];
             }
 
             return ret;
         }
 
-        public static Vector3 operator *(Vector3 a, double b) {
+        public static Vector3 operator *(Vector3 a, float b) {
             return b * a;
+        }
+
+        public static Vector3 operator /(Vector3 a, float b) {
+            var ret = new Vector3();
+            for (var i = 0; i < 3; i++) {
+                ret[i] = a[i] / b;
+            }
+            
+            return ret;
         }
 
         public static Vector3 operator -(Vector3 a, Vector3 b) {
@@ -81,7 +83,7 @@ namespace MyMathLib {
 
         public static double Dot(Vector3 a, Vector3 b) {
             var ret = 0d;
-            for (int i = 0; i < 3; i++) {
+            for (var i = 0; i < 3; i++) {
                 ret += a[i] * b[i];
             }
 
@@ -89,17 +91,15 @@ namespace MyMathLib {
         }
 
         public static Vector3 Cross(Vector3 a, Vector3 b) {
-            var ret = new Vector3();
-
-            ret[0] = a.y * b.z - a.z * b.y;
-            ret[1] = a.z * b.x - a.x * b.z;
-            ret[2] = a.x * b.y - a.y * b.x;
-
-            return ret;
+            return new Vector3{
+                x = a.y * b.z - a.z * b.y,
+                y = a.z * b.x - a.x * b.z,
+                z = a.x * b.y - a.y * b.x,
+            };
         }
 
-        override public string ToString() {
-            StringBuilder stringBuilder = new StringBuilder();
+        public override string ToString() {
+            var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("|\t" + Math.Round(vector[0],2) + "\t|");
             stringBuilder.AppendLine("|\t" + Math.Round(vector[1],2) + "\t|");
             stringBuilder.AppendLine("|\t" + Math.Round(vector[2],2) + "\t|");

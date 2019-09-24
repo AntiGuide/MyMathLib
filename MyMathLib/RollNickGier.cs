@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyMathLib {
-    class RollNickGier {
+    public static class RollNickGier {
         public static Matrix4X4 GetRotationMatrix(double x, double y, double z) {
             z *= (Math.PI / 180);
             y *= (Math.PI / 180);
             x *= (Math.PI / 180);
 
-            var sinA = Math.Sin(z);
-            var cosA = Math.Cos(z);
-            var sinB = Math.Sin(y);
-            var cosB = Math.Cos(y);
-            var sinC = Math.Sin(x);
-            var cosC = Math.Cos(x);
-            var m = new double[4, 4];
+            var sinA = (float)Math.Sin(z);
+            var cosA = (float)Math.Cos(z);
+            var sinB = (float)Math.Sin(y);
+            var cosB = (float)Math.Cos(y);
+            var sinC = (float)Math.Sin(x);
+            var cosC = (float)Math.Cos(x);
+            var m = new float[4, 4];
 
             m[0, 0] = cosA * cosB;
             m[0, 1] = cosA * sinB * sinC - sinA * cosC;

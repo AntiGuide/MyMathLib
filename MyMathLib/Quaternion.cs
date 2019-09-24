@@ -2,19 +2,19 @@
 
 namespace MyMathLib {
     public class Quaternion {
-        public double x, y, z, w;
+        public readonly float x, y, z, w;
 
-        public Quaternion(double x, double y, double z, double w) {
+        public Quaternion(float x, float y, float z, float w) {
             this.x = x;
             this.y = y;
             this.z = z;
             this.w = w;
         }
 
-        public Quaternion(double a, Vector3 v) {
-            a *= Math.PI / 180;
-            v *= Math.Sin(a / 2);
-            this.x = Math.Cos(a/2);
+        public Quaternion(float a, Vector3 v) {
+            a *= (float)Math.PI / 180;
+            v *= (float)Math.Sin(a / 2);
+            this.x = (float)Math.Cos(a/2);
             this.y = v.x;
             this.z = v.y;
             this.w = v.z;
@@ -39,7 +39,7 @@ namespace MyMathLib {
         }
 
         public static Quaternion operator /(Quaternion a, Quaternion b) {
-            var bGes2 = Math.Pow(b.x, 2) + Math.Pow(b.y, 2) + Math.Pow(b.z, 2) + Math.Pow(b.w, 2);
+            var bGes2 = (float)Math.Pow(b.x, 2) + (float)Math.Pow(b.y, 2) + (float)Math.Pow(b.z, 2) + (float)Math.Pow(b.w, 2);
 
             var x = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
             var y = a.y * b.x - a.x * b.y - a.w * b.z + a.z * b.w;
@@ -49,16 +49,16 @@ namespace MyMathLib {
             return new Quaternion(x, y, z, w) / bGes2;
         }
 
-        public static Quaternion operator /(Quaternion a, double b) {
+        public static Quaternion operator /(Quaternion a, float b) {
             return new Quaternion(a.x / b, a.y / b, a.z / b, a.w / b);
         }
 
-        public double Abs() {
-            return Math.Sqrt(Math.Pow(this.x, 2) + Math.Pow(this.y, 2) + Math.Pow(this.z, 2) + Math.Pow(this.w, 2));
+        public float Abs() {
+            return (float)Math.Sqrt(Math.Pow(this.x, 2) + Math.Pow(this.y, 2) + Math.Pow(this.z, 2) + Math.Pow(this.w, 2));
         }
 
         public Quaternion Inverse() {
-            var thisGes2 = Math.Pow(this.x, 2) + Math.Pow(this.y, 2) + Math.Pow(this.z, 2) + Math.Pow(this.w, 2);
+            var thisGes2 = (float)Math.Pow(this.x, 2) + (float)Math.Pow(this.y, 2) + (float)Math.Pow(this.z, 2) + (float)Math.Pow(this.w, 2);
             return Conjugate(this) / thisGes2;
         }
 
@@ -79,29 +79,35 @@ namespace MyMathLib {
         }
 
         public static bool operator ==(Quaternion a, Quaternion b) {
-            return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;
+            if (a == null && b == null) return true;
+            if (a == null || b == null) return false;
+
+            const double tolerance = 0.00001;
+            return Math.Abs(a.x - b.x) < tolerance && Math.Abs(a.y - b.y) < tolerance && Math.Abs(a.z - b.z) < tolerance && Math.Abs(a.w - b.w) < tolerance;
         }
 
         public static bool operator !=(Quaternion a, Quaternion b) {
-            return a.x != b.x || a.y != b.y || a.z != b.z || a.w != b.w;
+            if (a == null && b == null) return false;
+            if (a == null || b == null) return true;
+            
+            const double tolerance = 0.00001;
+            return Math.Abs(a.x - b.x) > tolerance || Math.Abs(a.y - b.y) > tolerance || Math.Abs(a.z - b.z) > tolerance || Math.Abs(a.w - b.w) > tolerance;
         }
 
-        override public string ToString() {
+        public override string ToString() {
             return Math.Round(x,2) + "+" + Math.Round(y, 2) + "i+" + Math.Round(z, 2) + "j+" + Math.Round(w, 2) + "k";
         }
 
         public override bool Equals(object obj) {
             var item = obj as Quaternion;
-
-            if (item == null) {
-                return false;
-            }
+            if (item == null) return false;
 
             return this == item;
         }
 
         public override int GetHashCode() {
-            return this.GetHashCode();
+            // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
+            return base.GetHashCode();
         }
     }
 }
