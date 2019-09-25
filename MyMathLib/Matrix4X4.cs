@@ -7,39 +7,16 @@ namespace MyMathLib {
     public class Matrix4X4 {
         private readonly float[,] matrix;
 
+        private Matrix4X4 scaleMatrix;
+        private Matrix4X4 rotationMatrix;
+        private Matrix4X4 translationMatrix;
+
         public Matrix4X4(float[,] matrix) {
             if (matrix.GetLength(0) != 4 || matrix.GetLength(1) != 4) {
                 throw new ArgumentOutOfRangeException(nameof(matrix), "Array height and width has to be 4");
             }
 
             this.matrix = matrix;
-        }
-
-        public Matrix4X4(Quaternion q) {
-            var tmpMatrix = new float[4, 4];
-            q = q.Normalize();
-
-            tmpMatrix[0, 0] = 1 - 2 * (float)Math.Pow(q.z, 2) - 2 * (float)Math.Pow(q.w, 2);
-            tmpMatrix[0, 1] = 2 * q.y * q.z - 2 * q.w * q.x;
-            tmpMatrix[0, 2] = 2 * q.y * q.w + 2 * q.z * q.x;
-            tmpMatrix[0, 3] = 0;
-
-            tmpMatrix[1, 0] = 2 * q.y * q.z + 2 * q.w * q.x;
-            tmpMatrix[1, 1] = 1 - 2 * (float)Math.Pow(q.y, 2) - 2 * (float)Math.Pow(q.w, 2);
-            tmpMatrix[1, 2] = 2 * q.z * q.w - 2 * q.y * q.x;
-            tmpMatrix[1, 3] = 0;
-
-            tmpMatrix[2, 0] = 2 * q.y * q.w - 2 * q.z * q.x;
-            tmpMatrix[2, 1] = 2 * q.z * q.w + 2 * q.y * q.x;
-            tmpMatrix[2, 2] = 1 - 2 * (float)Math.Pow(q.y, 2) - 2 * q.z;
-            tmpMatrix[2, 3] = 0;
-
-            tmpMatrix[3, 0] = 0;
-            tmpMatrix[3, 1] = 0;
-            tmpMatrix[3, 2] = 0;
-            tmpMatrix[3, 3] = 1;
-
-            this.matrix = tmpMatrix;
         }
 
         public Matrix4X4(IReadOnlyList<float> tmpMatrix) {
@@ -66,12 +43,112 @@ namespace MyMathLib {
         }
 
         public Matrix4X4(float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9, float m10, float m11, float m12, float m13, float m14, float m15, float m16) {
-            var tmpMatrix = new[,] { { m1, m2, m3, m4 }, { m5, m6, m7, m8 }, { m9, m10, m11, m12 }, { m13, m14, m15, m16 } };
+            var tmpMatrix = new[,] {{m1, m2, m3, m4}, {m5, m6, m7, m8}, {m9, m10, m11, m12}, {m13, m14, m15, m16}};
             this.matrix = tmpMatrix;
         }
 
         public Matrix4X4() {
             this.matrix = new float[4, 4];
+            matrix[0, 0] = 1f;
+            matrix[1, 1] = 1f;
+            matrix[2, 2] = 1f;
+            matrix[3, 3] = 1f;
+        }
+
+        public void SetTranslation(Vector3 vec) {
+            EnsureMatricesSetUp();
+
+            translationMatrix[3, 0] = vec.x;
+            translationMatrix[3, 1] = vec.y;
+            translationMatrix[3, 2] = vec.z;
+
+            ComputeMatrix();
+        }
+
+        public void SetScale(Vector3 vec) {
+            EnsureMatricesSetUp();
+
+            scaleMatrix[0, 0] = vec.x;
+            scaleMatrix[1, 1] = vec.y;
+            scaleMatrix[2, 2] = vec.z;
+
+            ComputeMatrix();
+        }
+
+        public void SetRotation(Quaternion q) {
+            EnsureMatricesSetUp();
+
+            q = q.Normalize();
+
+//            rotationMatrix[0, 0] = 1 - 2 * (float) Math.Pow(q.z, 2) - 2 * (float) Math.Pow(q.w, 2);
+//            rotationMatrix[0, 1] = 2 * q.y * q.z - 2 * q.w * q.x;
+//            rotationMatrix[0, 2] = 2 * q.y * q.w + 2 * q.z * q.x;
+//            rotationMatrix[0, 3] = 0;
+//
+//            rotationMatrix[1, 0] = 2 * q.y * q.z + 2 * q.w * q.x;
+//            rotationMatrix[1, 1] = 1 - 2 * (float) Math.Pow(q.y, 2) - 2 * (float) Math.Pow(q.w, 2);
+//            rotationMatrix[1, 2] = 2 * q.z * q.w - 2 * q.y * q.x;
+//            rotationMatrix[1, 3] = 0;
+//
+//            rotationMatrix[2, 0] = 2 * q.y * q.w - 2 * q.z * q.x;
+//            rotationMatrix[2, 1] = 2 * q.z * q.w + 2 * q.y * q.x;
+//            rotationMatrix[2, 2] = 1 - 2 * (float) Math.Pow(q.y, 2) - 2 * q.z;
+//            rotationMatrix[2, 3] = 0;
+//
+//            rotationMatrix[3, 0] = 0;
+//            rotationMatrix[3, 1] = 0;
+//            rotationMatrix[3, 2] = 0;
+//            rotationMatrix[3, 3] = 1;
+
+            var sqw = q.w*q.w;
+            var sqx = q.x*q.x;
+            var sqy = q.y*q.y;
+            var sqz = q.z*q.z;
+
+            rotationMatrix[0, 0] = sqx - sqy - sqz + sqw; // since sqw + sqx + sqy + sqz =1/invs*invs
+            rotationMatrix[1,1] = -sqx + sqy - sqz + sqw;
+            rotationMatrix[2,2] = -sqx - sqy + sqz + sqw;
+    
+            var tmp1 = q.x*q.y;
+            var tmp2 = q.z*q.w;
+            rotationMatrix[1, 0] = 2f * (tmp1 + tmp2);
+            rotationMatrix[0, 1] = 2f * (tmp1 - tmp2);
+    
+            tmp1 = q.x*q.z;
+            tmp2 = q.y*q.w;
+            rotationMatrix[2, 0] = 2f * (tmp1 - tmp2);
+            rotationMatrix[0, 2] = 2f * (tmp1 + tmp2);
+            tmp1 = q.y*q.z;
+            tmp2 = q.x*q.w;
+            rotationMatrix[2, 1] = 2f * (tmp1 + tmp2);
+            rotationMatrix[1, 2] = 2f * (tmp1 - tmp2);  
+            
+            ComputeMatrix();
+        }
+
+        public void SetRotation(float angle, Vector3 axis) {
+            SetRotation(new Quaternion(angle, axis));
+        }
+
+        public void SetRotation(float x, float y, float z) {
+            SetRotation(new Quaternion(x, y, z));
+        }
+
+        private void ComputeMatrix() {
+            // Scale, Rotate, Translate
+            var result = scaleMatrix * rotationMatrix * translationMatrix;
+            //result.matrix.CopyTo(matrix, 0);
+            for (var x = 0; x < matrix.GetLength(0); x++) {
+                for (var y = 0; y < matrix.GetLength(1); y++) {
+                    matrix[x, y] = result.matrix[x, y];
+                }
+            }
+        }
+
+        private void EnsureMatricesSetUp() {
+            if (scaleMatrix is null) scaleMatrix = new Matrix4X4();
+            if (rotationMatrix is null) rotationMatrix = new Matrix4X4();
+            if (translationMatrix is null) translationMatrix = new Matrix4X4();
         }
 
         public float this[int i, int i2] {
@@ -130,17 +207,15 @@ namespace MyMathLib {
 
                     ret[i, i2] = erg;
                 }
-
-
             }
 
             return ret;
         }
 
         public static Vector3 operator *(Matrix4X4 a, Vector3 b) {
-            var bArr = new [] { b.x, b.y, b.z, 1f };
-            var ret = new float[3];
-            for (var i = 0; i < 3; i++) {
+            var bArr = new Vector4(b.x, b.y, b.z, 1f);
+            var ret = new Vector4();
+            for (var i = 0; i < 4; i++) {
                 var erg = 0f;
                 for (var i2 = 0; i2 < 4; i2++) {
                     erg += a[i, i2] * bArr[i2];
@@ -149,7 +224,26 @@ namespace MyMathLib {
                 ret[i] = erg;
             }
 
-            return new Vector3(ret[0], ret[1], ret[2]);
+            return new Vector3(ret.x, ret.y, ret.z);
+        }
+
+        public static Vector3 operator *(Vector3 a, Matrix4X4 b) {
+            var aArr = new Vector4(a.x, a.y, a.z, 1f);
+            var ret = new Vector3();
+            for (var i = 0; i < 3; i++) {
+                var erg = 0f;
+                for (var i2 = 0; i2 < 4; i2++) {
+                    erg += aArr[i2] * b[i2, i];
+                }
+
+                ret[i] = erg;
+            }
+
+            return ret;
+        }
+
+        public Vector3 Transform(Vector3 point) {
+            return point * this;
         }
 
         public override string ToString() {

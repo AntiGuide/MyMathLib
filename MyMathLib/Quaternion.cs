@@ -11,13 +11,33 @@ namespace MyMathLib {
             this.w = w;
         }
 
-        public Quaternion(float a, Vector3 v) {
-            a *= (float)Math.PI / 180;
-            v *= (float)Math.Sin(a / 2);
-            this.x = (float)Math.Cos(a/2);
-            this.y = v.x;
-            this.z = v.y;
-            this.w = v.z;
+        public Quaternion(float x, float y, float z) {
+            const float toRad = (float) Math.PI / 180;
+            x *= toRad;
+            y *= toRad;
+            z *= toRad;
+
+            var cosX = (float) Math.Cos(x / 2);
+            var sinX = (float) Math.Sin(x / 2);
+            var cosY = (float) Math.Cos(y / 2);
+            var sinY = (float) Math.Sin(y / 2);
+            var cosZ = (float) Math.Cos(z / 2);
+            var sinZ = (float) Math.Sin(z / 2);
+            
+            this.x = cosY * cosZ * sinX + sinY * sinZ * cosX;
+            this.y = sinY * cosZ * cosX + cosY * sinZ * sinX;
+            this.z = cosY * sinZ * cosX - sinY * cosZ * sinX;
+            this.w = cosY * cosZ * cosX - sinY * sinZ * sinX;
+        }
+
+        public Quaternion(float angle, Vector3 axis) {
+            axis = axis.Normalized;
+            angle *= (float) Math.PI / 180;
+            axis *= (float) Math.Sin(angle / 2);
+            this.x = axis.x;
+            this.y = axis.y;
+            this.z = axis.z;
+            this.w = (float) Math.Cos(angle / 2);
         }
 
         public static Quaternion operator +(Quaternion a, Quaternion b) {
@@ -39,7 +59,7 @@ namespace MyMathLib {
         }
 
         public static Quaternion operator /(Quaternion a, Quaternion b) {
-            var bGes2 = (float)Math.Pow(b.x, 2) + (float)Math.Pow(b.y, 2) + (float)Math.Pow(b.z, 2) + (float)Math.Pow(b.w, 2);
+            var bGes2 = (float) Math.Pow(b.x, 2) + (float) Math.Pow(b.y, 2) + (float) Math.Pow(b.z, 2) + (float) Math.Pow(b.w, 2);
 
             var x = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
             var y = a.y * b.x - a.x * b.y - a.w * b.z + a.z * b.w;
@@ -54,11 +74,11 @@ namespace MyMathLib {
         }
 
         public float Abs() {
-            return (float)Math.Sqrt(Math.Pow(this.x, 2) + Math.Pow(this.y, 2) + Math.Pow(this.z, 2) + Math.Pow(this.w, 2));
+            return (float) Math.Sqrt(Math.Pow(this.x, 2) + Math.Pow(this.y, 2) + Math.Pow(this.z, 2) + Math.Pow(this.w, 2));
         }
 
         public Quaternion Inverse() {
-            var thisGes2 = (float)Math.Pow(this.x, 2) + (float)Math.Pow(this.y, 2) + (float)Math.Pow(this.z, 2) + (float)Math.Pow(this.w, 2);
+            var thisGes2 = (float) Math.Pow(this.x, 2) + (float) Math.Pow(this.y, 2) + (float) Math.Pow(this.z, 2) + (float) Math.Pow(this.w, 2);
             return Conjugate(this) / thisGes2;
         }
 
@@ -89,13 +109,13 @@ namespace MyMathLib {
         public static bool operator !=(Quaternion a, Quaternion b) {
             if (a == null && b == null) return false;
             if (a == null || b == null) return true;
-            
+
             const double tolerance = 0.00001;
             return Math.Abs(a.x - b.x) > tolerance || Math.Abs(a.y - b.y) > tolerance || Math.Abs(a.z - b.z) > tolerance || Math.Abs(a.w - b.w) > tolerance;
         }
 
         public override string ToString() {
-            return Math.Round(x,2) + "+" + Math.Round(y, 2) + "i+" + Math.Round(z, 2) + "j+" + Math.Round(w, 2) + "k";
+            return Math.Round(x, 2) + "+" + Math.Round(y, 2) + "i+" + Math.Round(z, 2) + "j+" + Math.Round(w, 2) + "k";
         }
 
         public override bool Equals(object obj) {
