@@ -79,49 +79,26 @@ namespace MyMathLib {
             EnsureMatricesSetUp();
 
             q = q.Normalize();
+            
+            var xx = q.x * q.x;
+            var xy = q.x * q.y;
+            var xz = q.x * q.z;
+            var xw = q.x * q.w;
+            var yy = q.y * q.y;
+            var yz = q.y * q.z;
+            var yw = q.y * q.w;
+            var zz = q.z * q.z;
+            var zw = q.z * q.w;
 
-//            rotationMatrix[0, 0] = 1 - 2 * (float) Math.Pow(q.z, 2) - 2 * (float) Math.Pow(q.w, 2);
-//            rotationMatrix[0, 1] = 2 * q.y * q.z - 2 * q.w * q.x;
-//            rotationMatrix[0, 2] = 2 * q.y * q.w + 2 * q.z * q.x;
-//            rotationMatrix[0, 3] = 0;
-//
-//            rotationMatrix[1, 0] = 2 * q.y * q.z + 2 * q.w * q.x;
-//            rotationMatrix[1, 1] = 1 - 2 * (float) Math.Pow(q.y, 2) - 2 * (float) Math.Pow(q.w, 2);
-//            rotationMatrix[1, 2] = 2 * q.z * q.w - 2 * q.y * q.x;
-//            rotationMatrix[1, 3] = 0;
-//
-//            rotationMatrix[2, 0] = 2 * q.y * q.w - 2 * q.z * q.x;
-//            rotationMatrix[2, 1] = 2 * q.z * q.w + 2 * q.y * q.x;
-//            rotationMatrix[2, 2] = 1 - 2 * (float) Math.Pow(q.y, 2) - 2 * q.z;
-//            rotationMatrix[2, 3] = 0;
-//
-//            rotationMatrix[3, 0] = 0;
-//            rotationMatrix[3, 1] = 0;
-//            rotationMatrix[3, 2] = 0;
-//            rotationMatrix[3, 3] = 1;
-
-            var sqw = q.w*q.w;
-            var sqx = q.x*q.x;
-            var sqy = q.y*q.y;
-            var sqz = q.z*q.z;
-
-            rotationMatrix[0, 0] = sqx - sqy - sqz + sqw; // since sqw + sqx + sqy + sqz =1/invs*invs
-            rotationMatrix[1,1] = -sqx + sqy - sqz + sqw;
-            rotationMatrix[2,2] = -sqx - sqy + sqz + sqw;
-    
-            var tmp1 = q.x*q.y;
-            var tmp2 = q.z*q.w;
-            rotationMatrix[1, 0] = 2f * (tmp1 + tmp2);
-            rotationMatrix[0, 1] = 2f * (tmp1 - tmp2);
-    
-            tmp1 = q.x*q.z;
-            tmp2 = q.y*q.w;
-            rotationMatrix[2, 0] = 2f * (tmp1 - tmp2);
-            rotationMatrix[0, 2] = 2f * (tmp1 + tmp2);
-            tmp1 = q.y*q.z;
-            tmp2 = q.x*q.w;
-            rotationMatrix[2, 1] = 2f * (tmp1 + tmp2);
-            rotationMatrix[1, 2] = 2f * (tmp1 - tmp2);  
+            rotationMatrix[0, 0] = 1 - 2 * (yy + zz);
+            rotationMatrix[0, 1] = 2 * (xy - zw);
+            rotationMatrix[0, 2] = 2 * (xz + yw);
+            rotationMatrix[1, 0] = 2 * (xy + zw);
+            rotationMatrix[1, 1] = 1 - 2 * (xx + zz);
+            rotationMatrix[1, 2] = 2 * (yz - xw);
+            rotationMatrix[2, 0] = 2 * (xz - yw);
+            rotationMatrix[2, 1] = 2 * (yz + xw);
+            rotationMatrix[2, 2] = 1 - 2 * (xx + yy);
             
             ComputeMatrix();
         }

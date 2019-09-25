@@ -11,23 +11,30 @@ namespace MyMathLib {
             this.w = w;
         }
 
-        public Quaternion(float x, float y, float z) {
-            const float toRad = (float) Math.PI / 180;
+        /// <summary>
+        /// Creates a quaternion from euler angles
+        /// </summary>
+        /// <param name="x">X = Bank = Roll</param>
+        /// <param name="y">Y = Heading = Yaw</param>
+        /// <param name="z">Z = Attitude = Pitch</param>
+        public Quaternion(double x, double y, double z) {
+            const float toRad = (float) Math.PI / 180f;
+
             x *= toRad;
             y *= toRad;
             z *= toRad;
 
-            var cosX = (float) Math.Cos(x / 2);
-            var sinX = (float) Math.Sin(x / 2);
             var cosY = (float) Math.Cos(y / 2);
             var sinY = (float) Math.Sin(y / 2);
             var cosZ = (float) Math.Cos(z / 2);
             var sinZ = (float) Math.Sin(z / 2);
-            
+            var cosX = (float) Math.Cos(x / 2);
+            var sinX = (float) Math.Sin(x / 2);
+
+            this.w = cosY * cosZ * cosX - sinY * sinZ * sinX;
             this.x = cosY * cosZ * sinX + sinY * sinZ * cosX;
             this.y = sinY * cosZ * cosX + cosY * sinZ * sinX;
             this.z = cosY * sinZ * cosX - sinY * cosZ * sinX;
-            this.w = cosY * cosZ * cosX - sinY * sinZ * sinX;
         }
 
         public Quaternion(float angle, Vector3 axis) {
@@ -115,7 +122,8 @@ namespace MyMathLib {
         }
 
         public override string ToString() {
-            return Math.Round(x, 2) + "+" + Math.Round(y, 2) + "i+" + Math.Round(z, 2) + "j+" + Math.Round(w, 2) + "k";
+            //return Math.Round(x, 2) + "+" + Math.Round(y, 2) + "i+" + Math.Round(z, 2) + "j+" + Math.Round(w, 2) + "k";
+            return Math.Round(w, 2) + "+i" + Math.Round(x, 2) + "+j" + Math.Round(y, 2) + "+k" + Math.Round(z, 2);
         }
 
         public override bool Equals(object obj) {
