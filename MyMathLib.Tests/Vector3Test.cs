@@ -89,15 +89,15 @@ namespace MyMathLib.Tests {
         [Test]
         public void Normalize() {
             var vec = vectors[6].Normalized;
-            vec.AssertValues(0.802f, 0.267f, 0.534f);
+            vec.AssertValues(0.801783681f, 0.267261237f, 0.534522474f);
         }
     }
 
     public static class VectorTestExtension {
         public static void AssertValues(this Vector3 vec, float x, float y, float z) {
-            Assert.That(vec.x, Is.EqualTo(x).Within(1).Percent);
-            Assert.That(vec.y, Is.EqualTo(y).Within(1).Percent);
-            Assert.That(vec.z, Is.EqualTo(z).Within(1).Percent);
+            Assert.That(vec.x, Is.EqualTo(x).Within(0.00001));
+            Assert.That(vec.y, Is.EqualTo(y).Within(0.00001));
+            Assert.That(vec.z, Is.EqualTo(z).Within(0.00001));
         }
     }
 }

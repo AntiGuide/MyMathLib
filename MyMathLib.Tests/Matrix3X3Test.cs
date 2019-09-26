@@ -87,17 +87,17 @@ namespace MyMathLib.Tests {
 
     public static class MatrixTestExtension {
         public static void AssertValues(this Matrix3X3 mat, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2) {
-            Assert.That(mat[0, 0], Is.EqualTo(x0).Within(1).Percent);
-            Assert.That(mat[0, 1], Is.EqualTo(y0).Within(1).Percent);
-            Assert.That(mat[0, 2], Is.EqualTo(z0).Within(1).Percent);
+            Assert.That(mat[0, 0], Is.EqualTo(x0).Within(0.000001));
+            Assert.That(mat[0, 1], Is.EqualTo(y0).Within(0.000001));
+            Assert.That(mat[0, 2], Is.EqualTo(z0).Within(0.000001));
 
-            Assert.That(mat[1, 0], Is.EqualTo(x1).Within(1).Percent);
-            Assert.That(mat[1, 1], Is.EqualTo(y1).Within(1).Percent);
-            Assert.That(mat[1, 2], Is.EqualTo(z1).Within(1).Percent);
+            Assert.That(mat[1, 0], Is.EqualTo(x1).Within(0.000001));
+            Assert.That(mat[1, 1], Is.EqualTo(y1).Within(0.000001));
+            Assert.That(mat[1, 2], Is.EqualTo(z1).Within(0.000001));
 
-            Assert.That(mat[2, 0], Is.EqualTo(x2).Within(1).Percent);
-            Assert.That(mat[2, 1], Is.EqualTo(y2).Within(1).Percent);
-            Assert.That(mat[2, 2], Is.EqualTo(z2).Within(1).Percent);
+            Assert.That(mat[2, 0], Is.EqualTo(x2).Within(0.000001));
+            Assert.That(mat[2, 1], Is.EqualTo(y2).Within(0.000001));
+            Assert.That(mat[2, 2], Is.EqualTo(z2).Within(0.000001));
         }
 
         public static void AssertValues(this Matrix3X3 mat, float[,] val) {

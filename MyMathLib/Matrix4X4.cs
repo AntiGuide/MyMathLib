@@ -58,9 +58,9 @@ namespace MyMathLib {
         public void SetTranslation(Vector3 vec) {
             EnsureMatricesSetUp();
 
-            translationMatrix[3, 0] = vec.x;
-            translationMatrix[3, 1] = vec.y;
-            translationMatrix[3, 2] = vec.z;
+            translationMatrix[0, 3] = vec.x;
+            translationMatrix[1, 3] = vec.y;
+            translationMatrix[2, 3] = vec.z;
 
             ComputeMatrix();
         }
@@ -79,26 +79,18 @@ namespace MyMathLib {
             EnsureMatricesSetUp();
 
             q = q.Normalize();
-            
-            var xx = q.x * q.x;
-            var xy = q.x * q.y;
-            var xz = q.x * q.z;
-            var xw = q.x * q.w;
-            var yy = q.y * q.y;
-            var yz = q.y * q.z;
-            var yw = q.y * q.w;
-            var zz = q.z * q.z;
-            var zw = q.z * q.w;
 
-            rotationMatrix[0, 0] = 1 - 2 * (yy + zz);
-            rotationMatrix[0, 1] = 2 * (xy - zw);
-            rotationMatrix[0, 2] = 2 * (xz + yw);
-            rotationMatrix[1, 0] = 2 * (xy + zw);
-            rotationMatrix[1, 1] = 1 - 2 * (xx + zz);
-            rotationMatrix[1, 2] = 2 * (yz - xw);
-            rotationMatrix[2, 0] = 2 * (xz - yw);
-            rotationMatrix[2, 1] = 2 * (yz + xw);
-            rotationMatrix[2, 2] = 1 - 2 * (xx + yy);
+            rotationMatrix[0, 0] = 1 - 2 * (q.y * q.y + q.z * q.z);
+            rotationMatrix[0, 1] =     2 * (q.x * q.y - q.z * q.w);
+            rotationMatrix[0, 2] =     2 * (q.x * q.z + q.y * q.w);
+            
+            rotationMatrix[1, 0] =     2 * (q.x * q.y + q.z * q.w);
+            rotationMatrix[1, 1] = 1 - 2 * (q.x * q.x + q.z * q.z);
+            rotationMatrix[1, 2] =     2 * (q.y * q.z - q.x * q.w);
+            
+            rotationMatrix[2, 0] =     2 * (q.x * q.z - q.y * q.w);
+            rotationMatrix[2, 1] =     2 * (q.y * q.z + q.x * q.w);
+            rotationMatrix[2, 2] = 1 - 2 * (q.x * q.x + q.y * q.y);
             
             ComputeMatrix();
         }
@@ -111,9 +103,16 @@ namespace MyMathLib {
             SetRotation(new Quaternion(x, y, z));
         }
 
+        public void SetTRS(Vector3 translation, Quaternion rotation, Vector3 scale) {
+            SetTranslation(translation);
+            SetRotation(rotation);
+            SetScale(scale);
+        }
+
         private void ComputeMatrix() {
             // Scale, Rotate, Translate
-            var result = scaleMatrix * rotationMatrix * translationMatrix;
+            //var result = scaleMatrix * rotationMatrix * translationMatrix;
+            var result = translationMatrix * rotationMatrix * scaleMatrix;
             //result.matrix.CopyTo(matrix, 0);
             for (var x = 0; x < matrix.GetLength(0); x++) {
                 for (var y = 0; y < matrix.GetLength(1); y++) {
@@ -220,7 +219,7 @@ namespace MyMathLib {
         }
 
         public Vector3 Transform(Vector3 point) {
-            return point * this;
+            return this * point;
         }
 
         public override string ToString() {

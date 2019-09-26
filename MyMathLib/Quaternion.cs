@@ -12,7 +12,7 @@ namespace MyMathLib {
         }
 
         /// <summary>
-        /// Creates a quaternion from euler angles
+        /// Creates a quaternion from euler angles (Unity standard convention => rotates ZXY)
         /// </summary>
         /// <param name="x">X = Bank = Roll</param>
         /// <param name="y">Y = Heading = Yaw</param>
@@ -23,18 +23,18 @@ namespace MyMathLib {
             x *= toRad;
             y *= toRad;
             z *= toRad;
-
+            
             var cosY = (float) Math.Cos(y / 2);
             var sinY = (float) Math.Sin(y / 2);
             var cosZ = (float) Math.Cos(z / 2);
             var sinZ = (float) Math.Sin(z / 2);
             var cosX = (float) Math.Cos(x / 2);
             var sinX = (float) Math.Sin(x / 2);
-
-            this.w = cosY * cosZ * cosX - sinY * sinZ * sinX;
-            this.x = cosY * cosZ * sinX + sinY * sinZ * cosX;
-            this.y = sinY * cosZ * cosX + cosY * sinZ * sinX;
-            this.z = cosY * sinZ * cosX - sinY * cosZ * sinX;
+            
+            this.x = sinX * cosY * cosZ + sinY * sinZ * cosX;
+            this.y = sinY * cosX * cosZ - sinX * sinZ * cosY;
+            this.z = sinZ * cosX * cosY - sinX * sinY * cosZ;
+            this.w = cosX * cosY * cosZ + sinY * sinZ * sinX;
         }
 
         public Quaternion(float angle, Vector3 axis) {
