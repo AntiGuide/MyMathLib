@@ -164,9 +164,7 @@ namespace MyMathLib {
         /// </summary>
         private void ComputeMatrix() {
             // Scale, Rotate, Translate
-            //var result = scaleMatrix * rotationMatrix * translationMatrix;
             var result = translationMatrix * rotationMatrix * scaleMatrix;
-            //result.matrix.CopyTo(matrix, 0);
             for (var x = 0; x < matrix.GetLength(0); x++) {
                 for (var y = 0; y < matrix.GetLength(1); y++) {
                     matrix[x, y] = result.matrix[x, y];

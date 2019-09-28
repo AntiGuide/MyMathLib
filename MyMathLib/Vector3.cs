@@ -22,7 +22,6 @@ namespace MyMathLib {
         /// <summary>
         /// Access the vectors components trough this indexer
         /// </summary>
-        /// <param name="i"></param>
         public float this[int i] {
             get => vector[i];
             set => vector[i] = value;

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 
 namespace MyMathLib {
+    /// <summary>Representation of a mathematical 3x3 matrix which can be used to transform points</summary>
     public class Matrix3X3 {
+        /// <summary>The 2D array to represent the combined matrix including translation, rotation and scale</summary>
         private readonly float[,] matrix;
 
         public Matrix3X3(float[,] matrix) {
@@ -15,6 +17,10 @@ namespace MyMathLib {
             this.matrix = matrix;
         }
 
+        /// <summary>
+        /// Create a final matrix from a pre created one dimensional array or IReadOnlyList
+        /// </summary>
+        /// <param name="tmpMatrix">Array containing 9 elements</param>
         public Matrix3X3(IReadOnlyList<float> tmpMatrix) {
             var matrix2 = new float[3, 3];
             for (var i = 0; i < 3; i++) {
@@ -26,6 +32,10 @@ namespace MyMathLib {
             this.matrix = matrix2;
         }
 
+        /// <summary>
+        /// Create a final matrix from a pre created one dimensional list or IEnumerable
+        /// </summary>
+        /// <param name="tmpMatrix">List containing 9 elements</param>
         public Matrix3X3(IEnumerable<float> tmpMatrix) {
             var matrix2 = new float[3, 3];
             var enumerable = tmpMatrix as float[] ?? tmpMatrix.ToArray();
@@ -38,15 +48,27 @@ namespace MyMathLib {
             this.matrix = matrix2;
         }
 
+        /// <summary>Create a matrix from 9 individual floats. m1 - m3 => row 1 and so on</summary>
         public Matrix3X3(float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9) {
             var tmpMatrix = new[,] {{m1, m2, m3}, {m4, m5, m6}, {m7, m8, m9}};
             this.matrix = tmpMatrix;
         }
 
+        /// <summary>
+        /// Create an identity matrix
+        /// </summary>
         public Matrix3X3() {
             this.matrix = new float[3, 3];
+            matrix[0, 0] = 1f;
+            matrix[1, 1] = 1f;
+            matrix[2, 2] = 1f;
         }
 
+        /// <summary>
+        /// Access the final matrix with an indexer.
+        /// </summary>
+        /// <param name="i">The final matrixes row</param>
+        /// <param name="i2">The final matrixes column</param>
         public float this[int i, int i2] {
             get => matrix[i, i2];
             set => matrix[i, i2] = value;
@@ -125,26 +147,32 @@ namespace MyMathLib {
             return new Vector3(ret[0], ret[1], ret[2]);
         }
 
+        /// <summary>
+        /// Calculate the inverse of the matrix
+        /// </summary>
         public Matrix3X3 Inverse {
             get {
-                // Calculate Determinant
-                var det = Determinant;
-                
-                // Calculate Adjoint. Adjoint = transpose(cofactor matrix)
-                var adj = Adjoint;
-                
-                // (1/Determinant) * Adjoint
-                return 1 / det * adj;
-                //return this;
+                var det = Determinant; // Calculate Determinant
+                var adj = Adjoint; // Calculate Adjoint. Adjoint = transpose(cofactor matrix)
+                return 1 / det * adj; // (1/Determinant) * Adjoint
             }
         }
         
+        /// <summary>
+        /// Calculate the determinant of the matrix
+        /// </summary>
         public float Determinant => matrix[0, 0]*(matrix[1, 1]*matrix[2, 2] - matrix[1, 2]*matrix[2, 1]) - 
                                     matrix[0, 1]*(matrix[1, 0]*matrix[2, 2] - matrix[1, 2]*matrix[2, 0]) +
                                     matrix[0, 2]*(matrix[1, 0]*matrix[2, 1] - matrix[1, 1]*matrix[2, 0]);
         
+        /// <summary>
+        /// Calculate the adjoint of this matrix
+        /// </summary>
         public Matrix3X3 Adjoint => this.Cofactor.Transpose;
         
+        /// <summary>
+        /// Calculate the cofactor of the matrix
+        /// </summary>
         public Matrix3X3 Cofactor {
             get {
                 var ret = new Matrix3X3 {
@@ -165,7 +193,10 @@ namespace MyMathLib {
                 return ret;
             }
         }
-
+        
+        /// <summary>
+        /// Calculates the transpose of the matrix
+        /// </summary>
         public Matrix3X3 Transpose {
             get {
                 var ret = new Matrix3X3 {
@@ -184,10 +215,6 @@ namespace MyMathLib {
                 return ret;
             }
         }
-
-        public static Matrix3X3 Identity => new Matrix3X3(1,0,0,
-                                                          0,1,0,
-                                                          0,0,1);
 
         public override string ToString() {
             var stringBuilder = new StringBuilder();
