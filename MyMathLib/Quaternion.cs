@@ -1,9 +1,12 @@
 ﻿using System;
 
 namespace MyMathLib {
+    /// <summary>A class representing a rotation as a quaternion. Follows Unity standard conventions -> Left Handed coordinate system + rotation in ZXY order</summary>
     public class Quaternion {
+        /// <summary>The quaternions components</summary>
         public readonly float x, y, z, w;
-
+        
+        /// <summary>Create a quaternion with pre calculated components</summary>
         public Quaternion(float x, float y, float z, float w) {
             this.x = x;
             this.y = y;
@@ -36,7 +39,12 @@ namespace MyMathLib {
             this.z = sinZ * cosX * cosY - sinX * sinY * cosZ;
             this.w = cosX * cosY * cosZ + sinY * sinZ * sinX;
         }
-
+        
+        /// <summary>
+        /// Creates a quaternion from axis angle (Unity standard convention => rotates ZXY)
+        /// </summary>
+        /// <param name="angle"></param>
+        /// <param name="axis"></param>
         public Quaternion(float angle, Vector3 axis) {
             axis = axis.Normalized;
             angle *= (float) Math.PI / 180;
@@ -80,19 +88,23 @@ namespace MyMathLib {
             return new Quaternion(a.x / b, a.y / b, a.z / b, a.w / b);
         }
 
+        /// <summary>The absoult length of the quaternion</summary>
         public float Abs() {
             return (float) Math.Sqrt(Math.Pow(this.x, 2) + Math.Pow(this.y, 2) + Math.Pow(this.z, 2) + Math.Pow(this.w, 2));
         }
 
+        /// <summary>The inverse of the quaternion</summary>
         public Quaternion Inverse() {
             var thisGes2 = (float) Math.Pow(this.x, 2) + (float) Math.Pow(this.y, 2) + (float) Math.Pow(this.z, 2) + (float) Math.Pow(this.w, 2);
             return Conjugate(this) / thisGes2;
         }
 
+        /// <summary>Calculates the conjugate of the quaternion</summary>
         public static Quaternion Conjugate(Quaternion a) {
             return new Quaternion(a.x, -a.y, -a.z, -a.w);
         }
 
+        /// <summary>Normalize this quaternion</summary>
         public Quaternion Normalize() {
             return this / this.Abs();
         }
@@ -122,7 +134,6 @@ namespace MyMathLib {
         }
 
         public override string ToString() {
-            //return Math.Round(x, 2) + "+" + Math.Round(y, 2) + "i+" + Math.Round(z, 2) + "j+" + Math.Round(w, 2) + "k";
             return Math.Round(w, 2) + "+i" + Math.Round(x, 2) + "+j" + Math.Round(y, 2) + "+k" + Math.Round(z, 2);
         }
 
